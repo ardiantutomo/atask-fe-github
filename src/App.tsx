@@ -1,11 +1,13 @@
+import { useState } from "react";
 import "./App.css";
+import SearchForm from "./components/SearchForm";
 
 function App() {
-  return (
-    <h1 className="text-3xl font-bold underline text-red-600">
-      Simple React Typescript Tailwind Sample
-    </h1>
-  );
+  const [query, setQuery] = useState<string>("");
+
+  const search = async () => {};
+
+  return <SearchForm query={query} setQuery={setQuery} search={search} />;
 }
 
 export default App;
