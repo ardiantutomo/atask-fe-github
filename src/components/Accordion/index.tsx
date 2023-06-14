@@ -1,8 +1,8 @@
-import { ReactElement, useState } from "react";
+import { ReactNode, useState } from "react";
 
 type AccordionProps = {
   title: string;
-  children: ReactElement;
+  children: ReactNode;
 };
 const Accordion = ({ title, children }: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
