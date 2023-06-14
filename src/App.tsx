@@ -23,6 +23,7 @@ function App() {
       const repositories: Repository[] = await response.json();
       return repositories;
     };
+    if (query.length === 0) return;
     setLoading(true);
     const userResponse = await fetch(
       `https://api.github.com/search/users?q=${query}&per_page=5`
@@ -47,26 +48,29 @@ function App() {
   return (
     <div>
       <SearchForm query={query} setQuery={setQuery} search={search} />
-      {showData ? (
-        <div className="py-2 px-4">
-          <p>Showing user for "{query}"</p>
-          {userData?.map((user) => {
-            return (
-              <Accordion title={user.login}>
-                {user.repositories.map((repo) => (
-                  <RepositoryItem
-                    name={repo.name}
-                    star={repo.stargazers_count}
-                    description={repo.description}
-                  />
-                ))}
-              </Accordion>
-            );
-          })}
-        </div>
-      ) : (
-        ""
-      )}
+      <div className="py-2 px-4">
+        {loading ? "Loading..." : ""}
+        {showData ? (
+          <>
+            <p>Showing user for "{query}"</p>
+            {userData?.map((user) => {
+              return (
+                <Accordion title={user.login}>
+                  {user.repositories.map((repo) => (
+                    <RepositoryItem
+                      name={repo.name}
+                      star={repo.stargazers_count}
+                      description={repo.description}
+                    />
+                  ))}
+                </Accordion>
+              );
+            })}
+          </>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 }
