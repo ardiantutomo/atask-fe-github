@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import "./App.css";
 import Accordion from "./components/Accordion";
 import RepositoryItem from "./components/RepositoryItem";
@@ -17,12 +17,14 @@ function App() {
     setShowData(false);
   }, [query]);
 
-  const search = async () => {
+  const search = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const fetchUserRepositories = async (repos_url: string) => {
       const response = await fetch(repos_url);
       const repositories: Repository[] = await response.json();
       return repositories;
     };
+    setShowData(false);
     if (query.length === 0) return;
     setLoading(true);
     const userResponse = await fetch(

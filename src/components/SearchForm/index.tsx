@@ -1,7 +1,9 @@
+import { FormEvent } from "react";
+
 type SearchFormProps = {
   query: string;
   setQuery: (input: string) => void;
-  search: () => void;
+  search: (event: FormEvent<HTMLFormElement>) => void;
 };
 
 const SearchForm = (props: SearchFormProps) => {
@@ -10,7 +12,11 @@ const SearchForm = (props: SearchFormProps) => {
   };
 
   return (
-    <form className="flex flex-col items-center space-y-4 py-2 px-4">
+    <form
+      className="flex flex-col items-center space-y-4 py-2 px-4"
+      onSubmit={props.search}
+      method="#"
+    >
       <input
         value={props.query}
         type="text"
@@ -20,9 +26,8 @@ const SearchForm = (props: SearchFormProps) => {
       />
 
       <button
-        type="button"
+        type="submit"
         className="w-full px-4 py-2 font-medium text-white bg-sky-700 rounded-md hover:bg-sky-800"
-        onClick={props.search}
       >
         Search
       </button>
