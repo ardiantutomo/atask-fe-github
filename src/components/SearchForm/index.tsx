@@ -20,7 +20,7 @@ const SearchForm = (props: SearchFormProps) => {
       />
 
       <button
-        type="submit"
+        type="button"
         className="w-full px-4 py-2 font-medium text-white bg-sky-700 rounded-md hover:bg-sky-800"
         onClick={props.search}
       >
