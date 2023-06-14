@@ -24,26 +24,31 @@ function App() {
       const repositories: Repository[] = await response.json();
       return repositories;
     };
+
     setShowData(false);
     if (query.length === 0) return;
     setLoading(true);
-    const userResponse = await fetch(
-      `https://api.github.com/search/users?q=${query}&per_page=5`
-    );
-    const userData: UserResponse = await userResponse.json();
+    try {
+      const userResponse = await fetch(
+        `https://api.github.com/search/users?q=${query}&per_page=5`
+      );
+      const userData: UserResponse = await userResponse.json();
 
-    const promise = userData.items?.map(async (user: User) => {
-      const repositories = await fetchUserRepositories(user.repos_url);
-      return {
-        ...user,
-        repositories,
-      } as UserWithRepository;
-    });
-    if (promise) {
-      const userWithRepositories = await Promise.all(promise);
-      setUserData(userWithRepositories);
+      const promise = userData.items?.map(async (user: User) => {
+        const repositories = await fetchUserRepositories(user.repos_url);
+        return {
+          ...user,
+          repositories,
+        } as UserWithRepository;
+      });
+      if (promise) {
+        const userWithRepositories = await Promise.all(promise);
+        setUserData(userWithRepositories);
+      }
+      setShowData(true);
+    } catch (e) {
+      alert(e);
     }
-    setShowData(true);
     setLoading(false);
   };
 
@@ -58,13 +63,15 @@ function App() {
             {userData?.map((user) => {
               return (
                 <Accordion title={user.login}>
-                  {user.repositories.map((repo) => (
-                    <RepositoryItem
-                      name={repo.name}
-                      star={repo.stargazers_count}
-                      description={repo.description}
-                    />
-                  ))}
+                  {Array.isArray(user.repositories)
+                    ? user.repositories.map((repo) => (
+                        <RepositoryItem
+                          name={repo.name}
+                          star={repo.stargazers_count}
+                          description={repo.description}
+                        />
+                      ))
+                    : "An error occured"}
                 </Accordion>
               );
             })}
