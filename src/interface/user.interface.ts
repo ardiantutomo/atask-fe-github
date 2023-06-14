@@ -1,9 +1,6 @@
-export interface UsersResponse {
-  total_count: number;
-  incomplete_results: boolean;
-  items?: Users[];
-}
-export interface Users {
+import { Repository } from "./repository.interface";
+
+export interface User {
   login: string;
   id: number;
   node_id: string;
@@ -23,4 +20,8 @@ export interface Users {
   type: string;
   site_admin: boolean;
   score: number;
+}
+
+export interface UserWithRepository extends User {
+  repositories: Repository[];
 }
